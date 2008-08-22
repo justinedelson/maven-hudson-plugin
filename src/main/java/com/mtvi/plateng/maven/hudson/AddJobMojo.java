@@ -121,7 +121,7 @@ public class AddJobMojo extends AbstractHudsonMojo {
     /**
      * Should a clean be performed before the build.
      * 
-     * @parameter expression="${peformClean}" defeault-value="true"
+     * @parameter expression="${peformClean}" default-value="true"
      */
     private boolean performClean;
 
