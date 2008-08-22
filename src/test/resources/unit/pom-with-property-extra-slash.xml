@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.mtvi.plateng.maven</groupId>
+				<artifactId>maven-hudson-plugin</artifactId>
+				<version>1.4-SNAPSHOT</version>
+				<configuration>
+					<!-- <project implementation="com.mtvi.plateng.maven.hudson.stubs.ExtraSlashPropertyProjectStub"/> -->
+					<hudsonURL>http://www.test.com/hudson/</hudsonURL>
+					<jobName>test-project</jobName>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

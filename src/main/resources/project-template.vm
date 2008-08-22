@@ -1,0 +1,203 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <builders class="vector">
+    <hudson.tasks.Maven>
+      <targets>$goals</targets>
+      <mavenName>maven</mavenName>
+    </hudson.tasks.Maven>
+  </builders>
+  <publishers class="vector">
+#if ($includeJunit)
+    <hudson.tasks.junit.JUnitResultArchiver>
+      <testResults>**/target/surefire-reports/*.xml</testResults>
+    </hudson.tasks.junit.JUnitResultArchiver>
+#end
+#if ($includeJavadoc)
+	<hudson.tasks.JavadocArchiver>
+		<javadocDir>trunk/target/site/apidocs</javadocDir>
+	</hudson.tasks.JavadocArchiver>
+#end
+#if ($includeEmail)
+    <hudson.tasks.Mailer>
+      <recipients></recipients>
+      <dontNotifyEveryUnstableBuild>false</dontNotifyEveryUnstableBuild>
+      <sendToIndividuals>true</sendToIndividuals>
+    </hudson.tasks.Mailer>
+#end
+#if ($includeViolations)
+    <hudson.plugins.violations.ViolationsPublisher>
+      <config>
+        <typeConfigs>
+          <no-comparator/>
+          <entry>
+            <string>checkstyle</string>
+            <hudson.plugins.violations.TypeConfig>
+              <type>checkstyle</type>
+              <min>10</min>
+              <max>999</max>
+              <unstable>9999</unstable>
+              <pattern>**/target/checkstyle-result.xml</pattern>
+            </hudson.plugins.violations.TypeConfig>
+          </entry>
+          <entry>
+            <string>cpd</string>
+            <hudson.plugins.violations.TypeConfig>
+              <type>cpd</type>
+              <min>10</min>
+              <max>999</max>
+              <unstable>9999</unstable>
+              <pattern>**/target/cpd.xml</pattern>
+            </hudson.plugins.violations.TypeConfig>
+          </entry>
+          <entry>
+            <string>findbugs</string>
+            <hudson.plugins.violations.TypeConfig>
+              <type>findbugs</type>
+              <min>10</min>
+              <max>999</max>
+              <unstable>9999</unstable>
+              <pattern>**/target/findbugs.xml</pattern>
+            </hudson.plugins.violations.TypeConfig>
+          </entry>
+          <entry>
+            <string>fxcop</string>
+            <hudson.plugins.violations.TypeConfig>
+              <type>fxcop</type>
+              <min>10</min>
+              <max>999</max>
+              <unstable>9999</unstable>
+              <pattern></pattern>
+            </hudson.plugins.violations.TypeConfig>
+          </entry>
+          <entry>
+            <string>pmd</string>
+            <hudson.plugins.violations.TypeConfig>
+              <type>pmd</type>
+              <min>10</min>
+              <max>999</max>
+              <unstable>9999</unstable>
+              <pattern>**/target/pmd.xml</pattern>
+            </hudson.plugins.violations.TypeConfig>
+          </entry>
+          <entry>
+            <string>pylint</string>
+            <hudson.plugins.violations.TypeConfig>
+              <type>pylint</type>
+              <min>10</min>
+              <max>999</max>
+              <unstable>9999</unstable>
+              <pattern></pattern>
+            </hudson.plugins.violations.TypeConfig>
+          </entry>
+          <entry>
+            <string>simian</string>
+            <hudson.plugins.violations.TypeConfig>
+              <type>simian</type>
+              <min>10</min>
+              <max>999</max>
+              <unstable>9999</unstable>
+              <usePattern>false</usePattern>
+              <pattern/>
+            </hudson.plugins.violations.TypeConfig>
+          </entry>
+        </typeConfigs>
+        <limit>100</limit>
+        <sourcePathPattern>**/src/main/java</sourcePathPattern>
+        <fauxProjectPath></fauxProjectPath>
+      </config>
+    </hudson.plugins.violations.ViolationsPublisher>
+#end
+#if ($includeCobertura)
+    <hudson.plugins.cobertura.CoberturaPublisher>
+      <coberturaReportFile>**/target/site/cobertura/coverage.xml</coberturaReportFile>
+      <healthyTarget>
+        <targets>
+          <entry>
+            <hudson.plugins.cobertura.targets.CoverageMetric>CONDITIONAL</hudson.plugins.cobertura.targets.CoverageMetric>
+            <int>70</int>
+          </entry>
+          <entry>
+            <hudson.plugins.cobertura.targets.CoverageMetric>METHOD</hudson.plugins.cobertura.targets.CoverageMetric>
+            <int>80</int>
+          </entry>
+          <entry>
+            <hudson.plugins.cobertura.targets.CoverageMetric>LINE</hudson.plugins.cobertura.targets.CoverageMetric>
+            <int>80</int>
+          </entry>
+        </targets>
+      </healthyTarget>
+      <unhealthyTarget>
+        <targets>
+          <entry>
+            <hudson.plugins.cobertura.targets.CoverageMetric reference="../../../../healthyTarget/targets/entry/hudson.plugins.cobertura.targets.CoverageMetric"/>
+            <int>0</int>
+          </entry>
+          <entry>
+            <hudson.plugins.cobertura.targets.CoverageMetric reference="../../../../healthyTarget/targets/entry[2]/hudson.plugins.cobertura.targets.CoverageMetric"/>
+            <int>0</int>
+          </entry>
+          <entry>
+            <hudson.plugins.cobertura.targets.CoverageMetric reference="../../../../healthyTarget/targets/entry[3]/hudson.plugins.cobertura.targets.CoverageMetric"/>
+            <int>0</int>
+          </entry>
+        </targets>
+      </unhealthyTarget>
+      <failingTarget>
+        <targets>
+          <entry>
+            <hudson.plugins.cobertura.targets.CoverageMetric reference="../../../../healthyTarget/targets/entry/hudson.plugins.cobertura.targets.CoverageMetric"/>
+            <int>0</int>
+          </entry>
+          <entry>
+            <hudson.plugins.cobertura.targets.CoverageMetric reference="../../../../healthyTarget/targets/entry[2]/hudson.plugins.cobertura.targets.CoverageMetric"/>
+            <int>0</int>
+          </entry>
+          <entry>
+            <hudson.plugins.cobertura.targets.CoverageMetric reference="../../../../healthyTarget/targets/entry[3]/hudson.plugins.cobertura.targets.CoverageMetric"/>
+            <int>0</int>
+          </entry>
+        </targets>
+      </failingTarget>
+    </hudson.plugins.cobertura.CoberturaPublisher>
+#end
+#if ($includeTwitter)
+	<hudson.plugins.twitter.TwitterPublisher/>
+#end
+  </publishers>
+  <buildWrappers class="vector">
+#if ($ports)
+    <org.jvnet.hudson.plugins.port__allocator.PortAllocator>
+      <ports>
+	#foreach($port in $ports)
+        <org.jvnet.hudson.plugins.port__allocator.DefaultPortType>
+          <name>$port</name>
+         </org.jvnet.hudson.plugins.port__allocator.DefaultPortType>
+	#end
+      </ports>
+    </org.jvnet.hudson.plugins.port__allocator.PortAllocator>
+#end
+#if ($startVNC)
+    <hudson.plugins.xvnc.Xvnc/>
+#end
+  </buildWrappers>
+  <scm class="hudson.scm.SubversionSCM">
+    <locations>
+      <hudson.scm.SubversionSCM_-ModuleLocation>
+        <remote>$subversionURL</remote>
+        <local>trunk</local>
+      </hudson.scm.SubversionSCM_-ModuleLocation>
+    </locations>
+    <useUpdate>true</useUpdate>
+  </scm>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <triggers class="vector">
+    <hudson.triggers.SCMTrigger>
+      <spec>* * * * *</spec>
+    </hudson.triggers.SCMTrigger>
+  </triggers>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <description>$description</description>
+  <actions class="java.util.concurrent.CopyOnWriteArrayList"/>
+</project>

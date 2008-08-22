@@ -1,0 +1,69 @@
+ -----
+ Introduction
+ -----
+ 
+Introduction
+
+ This plugin exists to create a job on a Hudson build server. It obtains
+ the base Hudson URL either through the <<<ciManagement>>> section of the pom
+ or a <<<hudson.url>>> property. At the present time, this plugin assumes
+ the use of Subversion.
+ 
+ 
+* Goals Overview
+
+   The Hudson Plugin has five goal:
+
+   * {{{add-job-mojo.html}hudson:add-job}} creates the job on Hudson.
+
+   * {{{replace-job-mojo.html}hudson:replace-job}} replaces a job's configuration in Hudson.
+
+   * {{{build-all-mojo.html}hudson:build-all}} builds every job in Hudson.
+
+   * {{{adjust-violations-mojo.html}hudson:adjust-violations}} changes the settings of the Violations plugin.
+   
+   * {{{add-twitter-mojo.html}hudson:add-twitter}} adds Twitter notifications.
+   
+* Authentication
+
+   The Hudson plugin supports passing HTTP authentication to the Hudson server.
+   The credentials used are retrieved from the Maven settings.xml file. Since the
+   <<<ciManagement>>> element within the pom doesn't support an id attribute, the
+   server id is generated from the Hudson URL. If you have this <<<ciManagement>>>
+   section in your pom:
+   
++-------------------------------+
+<ciManagement>
+  <system>hudson</system>
+  <url>http://myserver/hudson/</url>
+</ciManagement>      
++-------------------------------+
+   
+   Then you need to have this in your settings.xml file:
+
++-------------------------------+
+<server>
+  <id>myserver</id>
+  <username>USERNAME</username>
+  <password>PASSWORD</password>
+</server>     
++-------------------------------+
+
+   If your Hudson URL is on a non-default port, e.g.
+
++-------------------------------+
+<ciManagement>
+  <system>hudson</system>
+  <url>http://myserver:81/hudson/</url>
+</ciManagement>      
++-------------------------------+
+   
+   Then you need to have this in your settings.xml file:
+
++-------------------------------+
+<server>
+  <id>myserver:81</id>
+  <username>USERNAME</username>
+  <password>PASSWORD</password>
+</server>     
++-------------------------------+

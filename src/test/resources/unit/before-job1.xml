@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions class="java.util.concurrent.CopyOnWriteArrayList"/>
+  <description></description>
+  <keepDependencies>false</keepDependencies>
+  <properties/>
+  <scm class="hudson.scm.SubversionSCM">
+    <locations>
+      <hudson.scm.SubversionSCM_-ModuleLocation>
+
+        <remote>https://subversion.1515.mtvi.com/java/platformEngineering/master-project/trunk</remote>
+        <local>trunk</local>
+      </hudson.scm.SubversionSCM_-ModuleLocation>
+    </locations>
+    <useUpdate>true</useUpdate>
+  </scm>
+  <canRoam>true</canRoam>
+
+  <disabled>false</disabled>
+  <jdk>(Default)</jdk>
+  <triggers class="vector">
+    <hudson.triggers.SCMTrigger>
+      <spec>* * * * *</spec>
+    </hudson.triggers.SCMTrigger>
+  </triggers>
+
+  <builders>
+    <hudson.tasks.Maven>
+      <targets>install</targets>
+      <mavenName>maven</mavenName>
+    </hudson.tasks.Maven>
+  </builders>
+  <publishers class="vector" />
+  <buildWrappers class="vector"/>
+</project>

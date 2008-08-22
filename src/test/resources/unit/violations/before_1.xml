@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<builders>
+		<hudson.tasks.Maven>
+			<targets>clean install cobertura:cobertura pmd:pmd pmd:cpd findbugs:findbugs checkstyle:checkstyle</targets>
+			<mavenName>(Default)</mavenName>
+		</hudson.tasks.Maven>
+	</builders>
+	<publishers class="vector">
+		<hudson.tasks.junit.JUnitResultArchiver>
+			<testResults>**/target/surefire-reports/*.xml</testResults>
+		</hudson.tasks.junit.JUnitResultArchiver>
+		<hudson.plugins.violations.ViolationsPublisher>
+			<config>
+				<typeConfigs>
+					<no-comparator/>
+					<entry>
+						<string>checkstyle</string>
+						<hudson.plugins.violations.TypeConfig>
+							<type>checkstyle</type>
+							<min>10</min>
+							<max>999</max>
+							<unstable>9999</unstable>
+							<usePattern>false</usePattern>
+							<pattern>**/target/checkstyle-result.xml</pattern>
+						</hudson.plugins.violations.TypeConfig>
+					</entry>
+					<entry>
+						<string>cpd</string>
+						<hudson.plugins.violations.TypeConfig>
+							<type>cpd</type>
+							<min>10</min>
+							<max>999</max>
+							<usePattern>false</usePattern>
+							<pattern>**/target/cpd.xml</pattern>
+						</hudson.plugins.violations.TypeConfig>
+					</entry>
+					<entry>
+						<string>findbugs</string>
+						<hudson.plugins.violations.TypeConfig>
+							<type>findbugs</type>
+							<min>10</min>
+							<max>999</max>
+							<unstable>9999</unstable>
+							<usePattern>false</usePattern>
+							<pattern>**/target/findbugs.xml</pattern>
+						</hudson.plugins.violations.TypeConfig>
+					</entry>
+					<entry>
+						<string>fxcop</string>
+						<hudson.plugins.violations.TypeConfig>
+							<type>fxcop</type>
+							<min>10</min>
+							<max>999</max>
+							<unstable>9999</unstable>
+							<usePattern>false</usePattern>
+							<pattern/>
+						</hudson.plugins.violations.TypeConfig>
+					</entry>
+					<entry>
+						<string>pmd</string>
+						<hudson.plugins.violations.TypeConfig>
+							<type>pmd</type>
+							<min>10</min>
+							<max>999</max>
+							<usePattern>false</usePattern>
+							<pattern>**/target/pmd.xml</pattern>
+						</hudson.plugins.violations.TypeConfig>
+					</entry>
+					<entry>
+						<string>pylint</string>
+						<hudson.plugins.violations.TypeConfig>
+							<type>pylint</type>
+							<min>10</min>
+							<max>999</max>
+							<unstable>9999</unstable>
+							<usePattern>false</usePattern>
+							<pattern/>
+						</hudson.plugins.violations.TypeConfig>
+					</entry>
+					<entry>
+						<string>simian</string>
+						<hudson.plugins.violations.TypeConfig>
+							<type>simian</type>
+							<min>10</min>
+							<max>999</max>
+							<unstable>9999</unstable>
+							<usePattern>false</usePattern>
+							<pattern/>
+						</hudson.plugins.violations.TypeConfig>
+					</entry>
+				</typeConfigs>
+				<limit>100</limit>
+				<sourcePathPattern>**/src/main/java</sourcePathPattern>
+				<fauxProjectPath/>
+				<encoding>default</encoding>
+			</config>
+		</hudson.plugins.violations.ViolationsPublisher>
+		<hudson.plugins.cobertura.CoberturaPublisher>
+			<coberturaReportFile>**/target/site/cobertura/coverage.xml</coberturaReportFile>
+			<healthyTarget>
+				<targets>
+					<entry>
+						<hudson.plugins.cobertura.targets.CoverageMetric>METHOD</hudson.plugins.cobertura.targets.CoverageMetric>
+						<int>80</int>
+					</entry>
+					<entry>
+						<hudson.plugins.cobertura.targets.CoverageMetric>CONDITIONAL</hudson.plugins.cobertura.targets.CoverageMetric>
+						<int>70</int>
+					</entry>
+					<entry>
+						<hudson.plugins.cobertura.targets.CoverageMetric>LINE</hudson.plugins.cobertura.targets.CoverageMetric>
+						<int>80</int>
+					</entry>
+				</targets>
+			</healthyTarget>
+			<unhealthyTarget>
+				<targets>
+					<entry>
+						<hudson.plugins.cobertura.targets.CoverageMetric reference="../../../../healthyTarget/targets/entry/hudson.plugins.cobertura.targets.CoverageMetric"/>
+						<int>0</int>
+					</entry>
+					<entry>
+						<hudson.plugins.cobertura.targets.CoverageMetric reference="../../../../healthyTarget/targets/entry[2]/hudson.plugins.cobertura.targets.CoverageMetric"/>
+						<int>0</int>
+					</entry>
+					<entry>
+						<hudson.plugins.cobertura.targets.CoverageMetric reference="../../../../healthyTarget/targets/entry[3]/hudson.plugins.cobertura.targets.CoverageMetric"/>
+						<int>0</int>
+					</entry>
+				</targets>
+			</unhealthyTarget>
+			<failingTarget>
+				<targets>
+					<entry>
+						<hudson.plugins.cobertura.targets.CoverageMetric reference="../../../../healthyTarget/targets/entry/hudson.plugins.cobertura.targets.CoverageMetric"/>
+						<int>0</int>
+					</entry>
+					<entry>
+						<hudson.plugins.cobertura.targets.CoverageMetric reference="../../../../healthyTarget/targets/entry[2]/hudson.plugins.cobertura.targets.CoverageMetric"/>
+						<int>0</int>
+					</entry>
+					<entry>
+						<hudson.plugins.cobertura.targets.CoverageMetric reference="../../../../healthyTarget/targets/entry[3]/hudson.plugins.cobertura.targets.CoverageMetric"/>
+						<int>0</int>
+					</entry>
+				</targets>
+			</failingTarget>
+		</hudson.plugins.cobertura.CoberturaPublisher>
+	</publishers>
+	<buildWrappers class="vector"/>
+	<scm class="hudson.scm.SubversionSCM">
+		<locations>
+			<hudson.scm.SubversionSCM_-ModuleLocation>
+				<remote>https://subversion.1515.mtvi.com/java/community/user-profile/trunk</remote>
+				<local>trunk</local>
+			</hudson.scm.SubversionSCM_-ModuleLocation>
+		</locations>
+		<useUpdate>true</useUpdate>
+	</scm>
+	<canRoam>true</canRoam>
+	<disabled>false</disabled>
+	<jdk>(Default)</jdk>
+	<triggers class="vector">
+		<hudson.triggers.SCMTrigger>
+			<spec>* * * * *</spec>
+		</hudson.triggers.SCMTrigger>
+	</triggers>
+	<keepDependencies>false</keepDependencies>
+	<properties/>
+	<description>A system for managing data for a user</description>
+	<actions class="java.util.concurrent.CopyOnWriteArrayList"/>
+</project>
