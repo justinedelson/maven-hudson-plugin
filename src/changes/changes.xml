@@ -85,7 +85,7 @@
                 Add additionalGoals option.
             </action>
         </release>
-		<release version="2.0-alpha-1" date="tbd" description="First java.net release."/>
+		<release version="2.0-alpha-1" date="8/25/2008" description="First java.net release."/>
         
 	</body>
 </document>
