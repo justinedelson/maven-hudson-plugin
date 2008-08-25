@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>com.mtvi</groupId>
 		<artifactId>master-public-maven-plugin</artifactId>
-		<version>13-SNAPSHOT</version>
+		<version>13</version>
 	</parent>
 	<groupId>com.mtvi.plateng.maven</groupId>
 	<artifactId>maven-hudson-plugin</artifactId>
@@ -52,7 +52,7 @@
 		<dependency>
 			<groupId>com.mtvi.plateng</groupId>
 			<artifactId>test-support</artifactId>
-			<version>1.0-alpha-3-SNAPSHOT</version>
+			<version>1.0-alpha-3</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
