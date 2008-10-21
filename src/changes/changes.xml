@@ -4,88 +4,92 @@
 		<release version="1.1" date="3/20/2008"/>
 		<release version="1.2" date="3/20/2008"/>
 		<release version="1.3" date="3/24/2008">
-			<action dev="edelsonj" type="add">
+			<action dev="justinedelson" type="add">
 				Changed default goals to exclude clean (was taking too long)
 			</action>
 		</release>
 		<release version="1.4" date="3/27/2008">
-			<action dev="edelsonj" type="add" issue="MVN-19">
+			<action dev="justinedelson" type="add" issue="MVN-19">
 				Can use project.ciManagement.url for configuration
 			</action>
-			<action dev="edelsonj" type="add" issue="MVN-18">
+			<action dev="justinedelson" type="add" issue="MVN-18">
 				Junit, Cobertura, and Violations are optional now.
 			</action>
-			<action dev="edelsonj" type="add" issue="MVN-14">
+			<action dev="justinedelson" type="add" issue="MVN-14">
 				Now fails nicely when there's already a job.
 			</action>
-			<action dev="edelsonj" type="add">
+			<action dev="justinedelson" type="add">
 				Email notifications turned on by default.
 			</action>
 		</release>
 		<release version="1.5" date="4/1/2008">
-			<action dev="edelsonj" type="fix">
+			<action dev="justinedelson" type="fix">
 				Not all goals were being set correctly.
 			</action>			
 		</release>
 		<release version="1.6" date="4/9/2008">
-			<action dev="edelsonj" type="add">
+			<action dev="justinedelson" type="add">
 				HTTP Authentication is supported.
 			</action>	
-			<action dev="edelsonj" type="add">
+			<action dev="justinedelson" type="add">
 				Goals submitted to Hudson are now dependent upon the plugins used.
 			</action>			
 		</release>
         <release version="1.7" date="6/4/2008">
-            <action dev="edelsonj" type="add">
+            <action dev="justinedelson" type="add">
                 Default goals now set to 'clean install'
             </action>
-            <action dev="edelsonj" type="add" issue="MVN-24">
+            <action dev="justinedelson" type="add" issue="MVN-24">
                 Adding support for port allocator plugin.
             </action>
-            <action dev="edelsonj" type="add">
+            <action dev="justinedelson" type="add">
                 Adding support for XVnc plugin.
             </action>
-            <action dev="edelsonj" type="add">
+            <action dev="justinedelson" type="add">
                 Adding build-all goal.
             </action>
-            <action dev="edelsonj" type="add">
+            <action dev="justinedelson" type="add">
                 Adding adjust-violations goal.
             </action>
         </release>
         <release version="1.8" date="6/26/2008">
-            <action dev="edelsonj" type="add">
+            <action dev="justinedelson" type="add">
                 Adding ability to override the job name.
             </action>
-            <action dev="edelsonj" type="add">
+            <action dev="justinedelson" type="add">
                 Adding add-twitter mojo.
             </action>
-            <action dev="edelsonj" type="add">
+            <action dev="justinedelson" type="add">
                 Adding replace-job mojo.
             </action>
         </release>
         <release version="1.8.1" date="6/26/2008">
-            <action dev="edelsonj" type="fix">
+            <action dev="justinedelson" type="fix">
                 Documentation bugs.
             </action>
         </release>
         <release version="1.9" date="8/20/2008">
-            <action dev="edelsonj" type="add" issue="MVN-35">
+            <action dev="justinedelson" type="add" issue="MVN-35">
                 Adding javadoc support.
             </action>
-            <action dev="edelsonj" type="add">
+            <action dev="justinedelson" type="add">
                 Adding twitter support.
             </action>
-            <action dev="edelsonj" type="fix" issue="MVN-42">
+            <action dev="justinedelson" type="fix" issue="MVN-42">
                 add-job no longer fails when there's no description.
             </action>
-            <action dev="edelsonj" type="fix">
+            <action dev="justinedelson" type="fix">
                 Accept -DincludeJunit, etc.
             </action>
-            <action dev="edelsonj" type="update">
+            <action dev="justinedelson" type="update">
                 Add additionalGoals option.
             </action>
         </release>
 		<release version="2.0-alpha-1" date="8/25/2008" description="First java.net release."/>
-        
+        <release version="2.0-alpha-2" date="tbd">
+            <action dev="justinedelson" type="add">
+                Adding -fae and -B options.
+            </action>
+        </release>
 	</body>
 </document>

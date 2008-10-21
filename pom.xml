@@ -65,6 +65,17 @@
             </url>
         </site>
     </distributionManagement>
+	<developers>
+		<developer>
+			<id>justinedelson</id>
+			<name>Justin Edelson</name>
+			<email>justin.edelson@mtvstaff.com</email>
+			<organization>MTV Networks</organization>
+			<roles>
+				<role>Project Lead</role>
+			</roles>
+		</developer>
+	</developers>
 
     <scm>
         <url>https://hudson.dev.java.net/source/browse/hudson/trunk/hudson/tools/maven-hudson-plugin</url>

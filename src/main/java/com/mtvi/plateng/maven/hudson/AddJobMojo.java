@@ -111,13 +111,13 @@ public class AddJobMojo extends AbstractHudsonMojo {
      * @required
      */
     private boolean includeViolations = true;
+
     /**
      * Name of the job to be created.
      * 
      * @parameter expression="${jobName}"
      */
     private String jobName;
-
     /**
      * Should a clean be performed before the build.
      * 
@@ -132,6 +132,22 @@ public class AddJobMojo extends AbstractHudsonMojo {
      * @required
      */
     private String primaryGoal;
+
+    /**
+     * Should the -fae command-line option be passed to Maven, specifying that
+     * the build should only report a failure at the end.
+     * 
+     * @parameter expression="${failAtEnd}" default-value="true"
+     */
+    private boolean shouldFailAtEnd = true;
+
+    /**
+     * Should the -B command-line option be passed to Maven, specifying that the
+     * build is running in batch (i.e. non-interactive) mode.
+     * 
+     * @parameter expression="${useBatchMode}" default-value="true"
+     */
+    private boolean shouldUseBatchMode = true;
 
     /**
      * If true, will start a VNC session before each job execution. See
@@ -302,6 +318,14 @@ public class AddJobMojo extends AbstractHudsonMojo {
     private String createFullGoals() throws MojoExecutionException {
         try {
             StringBuilder builder = new StringBuilder();
+            if (shouldFailAtEnd) {
+                builder.append("-fae ");
+            }
+
+            if (shouldUseBatchMode) {
+                builder.append("-B ");
+            }
+
             for (String plugin : PLUGINS) {
                 if (isPluginEnabled(plugin) && PREFIXES.containsKey(plugin)) {
                     builder.append(StringUtils.join(PREFIXES.get(plugin).toArray(), " "));
