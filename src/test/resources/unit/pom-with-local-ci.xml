@@ -3,11 +3,11 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>com.mtvi.plateng.maven</groupId>
+				<groupId>org.jvnet.hudson.tools</groupId>
 				<artifactId>maven-hudson-plugin</artifactId>
 				<version>1.4-SNAPSHOT</version>
 				<configuration>
-					<project implementation="com.mtvi.plateng.maven.hudson.stubs.LocalCIProjectStub"/>
+					<project implementation="org.jvnet.hudson.maven.plugins.hudson.stubs.LocalCIProjectStub"/>
 					<jobName>test-project</jobName>
 					<subversionURL>scm:svn:https://subversion.1515.mtvi.com/java/foo/bar/</subversionURL>
 					<primaryGoal>install</primaryGoal>

@@ -90,6 +90,12 @@
             <action dev="justinedelson" type="add">
                 Adding -fae and -B options.
             </action>
+            <action dev="justinedelson" type="update">
+                Repackage to org.jvnet.hudson.maven.plugins.hudson
+            </action>
+            <action dev="justinedelson" type="update">
+                Change groupId to org.jvnet.hudson.tools
+            </action>
         </release>
 	</body>
 </document>

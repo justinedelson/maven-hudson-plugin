@@ -3,11 +3,11 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>com.mtvi.plateng.maven</groupId>
+				<groupId>org.jvnet.hudson.tools</groupId>
 				<artifactId>maven-hudson-plugin</artifactId>
 				<version>1.4-SNAPSHOT</version>
 				<configuration>
-					<!--<project implementation="com.mtvi.plateng.maven.hudson.stubs.PropertyProjectStub"/> -->
+					<!--<project implementation="org.jvnet.hudson.maven.plugins.hudson.stubs.PropertyProjectStub"/> -->
 					<hudsonURL>http://www.test.com/hudson</hudsonURL>
 					<jobName>test-project</jobName>
 				</configuration>

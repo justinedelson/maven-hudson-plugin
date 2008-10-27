@@ -3,7 +3,7 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>com.mtvi.plateng.maven</groupId>
+				<groupId>org.jvnet.hudson.tools</groupId>
 				<artifactId>maven-hudson-plugin</artifactId>
 				<version>1.4-SNAPSHOT</version>
 				<configuration>
