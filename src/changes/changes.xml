@@ -86,7 +86,7 @@
             </action>
         </release>
 		<release version="2.0-alpha-1" date="8/25/2008" description="First java.net release."/>
-        <release version="2.0-alpha-2" date="tbd">
+        <release version="2.0-alpha-2" date="10/27/2008">
             <action dev="justinedelson" type="add">
                 Adding -fae and -B options.
             </action>
