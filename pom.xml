@@ -8,7 +8,7 @@
 	<groupId>org.jvnet.hudson.tools</groupId>
 	<artifactId>maven-hudson-plugin</artifactId>
 	<packaging>maven-plugin</packaging>
-	<version>2.0-alpha-2-SNAPSHOT</version>
+	<version>2.0-alpha-2</version>
 	<name>Maven Hudson Plugin</name>
 	<description>Maven Hudson Plugin that quickly adds projects to the Hudson CI system.</description>
 	<url>https://hudson.dev.java.net/maven-hudson-plugin</url>
@@ -78,9 +78,9 @@
 	</developers>
 
     <scm>
-        <url>https://hudson.dev.java.net/source/browse/hudson/trunk/hudson/tools/maven-hudson-plugin</url>
-        <developerConnection>scm:svn:https://hudson.dev.java.net/svn/hudson/trunk/hudson/tools/maven-hudson-plugin</developerConnection>
-        <connection>scm:svn:https://hudson.dev.java.net/svn/hudson/trunk/hudson/tools/maven-hudson-plugin</connection>
+        <url>https://hudson.dev.java.net/source/browse/hudson/tags/maven-hudson-plugin-2.0-alpha-2</url>
+        <developerConnection>scm:svn:https://hudson.dev.java.net/svn/hudson/tags/maven-hudson-plugin-2.0-alpha-2</developerConnection>
+        <connection>scm:svn:https://hudson.dev.java.net/svn/hudson/tags/maven-hudson-plugin-2.0-alpha-2</connection>
     </scm>
 	<build>
 		<plugins>
