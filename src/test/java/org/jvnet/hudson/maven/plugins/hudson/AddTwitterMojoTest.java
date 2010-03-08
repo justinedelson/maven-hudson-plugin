@@ -6,14 +6,14 @@ import java.net.URL;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import junitx.util.PrivateAccessor;
+
 import org.codehaus.plexus.util.IOUtil;
 import org.custommonkey.xmlunit.XMLAssert;
 import org.ddsteps.mock.httpserver.JettyMockServer;
 import org.ddsteps.mock.httpserver.JettyMockServer.Callback;
 import org.jvnet.hudson.maven.plugins.hudson.AddTwitterMojo;
 import org.xml.sax.InputSource;
-
-import com.mtvi.plateng.testing.ReflectionHelper;
 
 public class AddTwitterMojoTest extends AbstractWithServerTestCase {
     private String version;
@@ -27,8 +27,8 @@ public class AddTwitterMojoTest extends AbstractWithServerTestCase {
         mockserver.expect("/hudson/job/job2/config.xml", createConfigPostCallback("job2"));
         AddTwitterMojo mojo = new AddTwitterMojo();
         assertNotNull(mojo);
-        ReflectionHelper.setField(mojo, "hudsonURL", new URL("http://localhost:3434/hudson"));
-        ReflectionHelper.setField(mojo, "doAll", true);
+        PrivateAccessor.setField(mojo, "hudsonURL", new URL("http://localhost:3434/hudson"));
+        PrivateAccessor.setField(mojo, "doAll", true);
         mojo.execute();
         mockserver.verify();
     }
@@ -40,8 +40,8 @@ public class AddTwitterMojoTest extends AbstractWithServerTestCase {
         mockserver.expect("/hudson/job/job1/config.xml", createConfigPostCallback("job1"));
         AddTwitterMojo mojo = new AddTwitterMojo();
         assertNotNull(mojo);
-        ReflectionHelper.setField(mojo, "hudsonURL", new URL("http://localhost:3434/hudson"));
-        ReflectionHelper.setField(mojo, "doAll", true);
+        PrivateAccessor.setField(mojo, "hudsonURL", new URL("http://localhost:3434/hudson"));
+        PrivateAccessor.setField(mojo, "doAll", true);
         mojo.execute();
         mockserver.verify();
     }
@@ -52,8 +52,8 @@ public class AddTwitterMojoTest extends AbstractWithServerTestCase {
         mockserver.expect("/hudson/job/job1/config.xml", createConfigPostCallback("job1"));
         AddTwitterMojo mojo = new AddTwitterMojo();
         assertNotNull(mojo);
-        ReflectionHelper.setField(mojo, "hudsonURL", new URL("http://localhost:3434/hudson"));
-        ReflectionHelper.setField(mojo, "jobName", "job1");
+        PrivateAccessor.setField(mojo, "hudsonURL", new URL("http://localhost:3434/hudson"));
+        PrivateAccessor.setField(mojo, "jobName", "job1");
         mojo.execute();
         mockserver.verify();
     }

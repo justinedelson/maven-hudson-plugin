@@ -6,9 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.ddsteps.mock.httpserver.JettyMockServer.Callback;
-import org.jvnet.hudson.maven.plugins.hudson.AddJobMojo;
-
-import com.mtvi.plateng.testing.http.JettyMockServerWithAuth;
+import org.jvnet.hudson.maven.plugins.hudson.util.JettyMockServerWithAuth;
 
 public class ExecuteWithAuthTest extends AbstractWithServerTestCase {
     public void testNoJob() throws Exception {

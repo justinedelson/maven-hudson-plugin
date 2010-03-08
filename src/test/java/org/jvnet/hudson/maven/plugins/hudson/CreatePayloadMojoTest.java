@@ -1,10 +1,9 @@
 package org.jvnet.hudson.maven.plugins.hudson;
 
 import junit.framework.TestCase;
+import junitx.util.PrivateAccessor;
 
 import org.custommonkey.xmlunit.XMLAssert;
-
-import com.mtvi.plateng.testing.ReflectionHelper;
 
 public class CreatePayloadMojoTest extends TestCase {
 
@@ -33,7 +32,7 @@ public class CreatePayloadMojoTest extends TestCase {
     }
 
     public void testCreateNoCoberturaPayload() throws Exception {
-        ReflectionHelper.setField(mojo, "includeCobertura", false);
+        PrivateAccessor.setField(mojo, "includeCobertura", false);
 
         String payload = mojo.createPayload();
 
@@ -54,7 +53,7 @@ public class CreatePayloadMojoTest extends TestCase {
     }
 
     public void testCreateNoEmailPayload() throws Exception {
-        ReflectionHelper.setField(mojo, "includeEmail", false);
+        PrivateAccessor.setField(mojo, "includeEmail", false);
 
         String payload = mojo.createPayload();
 
@@ -76,7 +75,7 @@ public class CreatePayloadMojoTest extends TestCase {
     }
 
     public void testCreateNoJavadocPayload() throws Exception {
-        ReflectionHelper.setField(mojo, "includeJavadoc", false);
+        PrivateAccessor.setField(mojo, "includeJavadoc", false);
 
         String payload = mojo.createPayload();
 
@@ -99,7 +98,7 @@ public class CreatePayloadMojoTest extends TestCase {
     }
 
     public void testCreateNoJunitPayload() throws Exception {
-        ReflectionHelper.setField(mojo, "includeJunit", false);
+        PrivateAccessor.setField(mojo, "includeJunit", false);
 
         String payload = mojo.createPayload();
         XMLAssert.assertXpathNotExists(
@@ -114,7 +113,7 @@ public class CreatePayloadMojoTest extends TestCase {
     }
 
     public void testCreateNoTwitterPayload() throws Exception {
-        ReflectionHelper.setField(mojo, "includeTwitter", false);
+        PrivateAccessor.setField(mojo, "includeTwitter", false);
 
         String payload = mojo.createPayload();
 
@@ -136,7 +135,7 @@ public class CreatePayloadMojoTest extends TestCase {
     }
 
     public void testCreateNoViolationsPayload() throws Exception {
-        ReflectionHelper.setField(mojo, "includeViolations", false);
+        PrivateAccessor.setField(mojo, "includeViolations", false);
 
         String payload = mojo.createPayload();
 
@@ -155,7 +154,7 @@ public class CreatePayloadMojoTest extends TestCase {
     }
 
     public void testCreatePayloadWithAdditionalGoals() throws Exception {
-        ReflectionHelper.setField(mojo, "additionalGoals", "utils:test");
+        PrivateAccessor.setField(mojo, "additionalGoals", "utils:test");
         String payload = mojo.createPayload();
 
         XMLAssert
@@ -165,7 +164,7 @@ public class CreatePayloadMojoTest extends TestCase {
     }
 
     public void testCreatePayloadWithMultiplePortAllocation() throws Exception {
-        ReflectionHelper.setField(mojo, "allocatePorts", "PORT1,PORT2");
+        PrivateAccessor.setField(mojo, "allocatePorts", "PORT1,PORT2");
 
         String payload = mojo.createPayload();
 
@@ -190,7 +189,7 @@ public class CreatePayloadMojoTest extends TestCase {
     }
 
     public void testCreatePayloadWithSinglePortAllocation() throws Exception {
-        ReflectionHelper.setField(mojo, "allocatePorts", "PORT1");
+        PrivateAccessor.setField(mojo, "allocatePorts", "PORT1");
 
         String payload = mojo.createPayload();
 
@@ -212,11 +211,11 @@ public class CreatePayloadMojoTest extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         mojo = new AddJobMojo();
-        ReflectionHelper.setField(mojo, "performClean", true);
-        ReflectionHelper.setField(mojo, "primaryGoal", "install");
-        ReflectionHelper.setField(mojo, "subversionURL",
+        PrivateAccessor.setField(mojo, "performClean", true);
+        PrivateAccessor.setField(mojo, "primaryGoal", "install");
+        PrivateAccessor.setField(mojo, "subversionURL",
                 "scm:svn:https://subversion.1515.mtvi.com/java/foo/bar/");
-        ReflectionHelper.setField(mojo, "description", "description");
+        PrivateAccessor.setField(mojo, "description", "description");
     }
 
 }

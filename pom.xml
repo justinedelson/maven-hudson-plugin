@@ -49,12 +49,24 @@
 			<version>1.1</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.mtvi.plateng</groupId>
-			<artifactId>test-support</artifactId>
-			<version>1.0-alpha-3</version>
-			<scope>test</scope>
-		</dependency>
+        <dependency>
+            <groupId>org.ddsteps</groupId>
+            <artifactId>ddsteps-httpserver-mock</artifactId>
+            <version>1.0-m1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>xmlunit</groupId>
+            <artifactId>xmlunit</artifactId>
+            <version>1.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+        	<groupId>jaxen</groupId>
+        	<artifactId>jaxen</artifactId>
+        	<version>1.1.1</version>
+            <scope>test</scope>
+        </dependency>
 	</dependencies>
 
 	<distributionManagement>
@@ -110,5 +122,5 @@
       </snapshots>
     </repository>
   </repositories>
-    
+
 </project>

@@ -3,12 +3,10 @@ package org.jvnet.hudson.maven.plugins.hudson;
 import java.net.URL;
 
 import junit.framework.TestCase;
+import junitx.util.PrivateAccessor;
 
 import org.apache.maven.settings.Server;
 import org.apache.maven.settings.Settings;
-import org.jvnet.hudson.maven.plugins.hudson.AddJobMojo;
-
-import com.mtvi.plateng.testing.ReflectionHelper;
 
 public class FindServerTest extends TestCase {
 
@@ -73,7 +71,7 @@ public class FindServerTest extends TestCase {
 
     protected AddJobMojo createMojo(Settings settings) throws Exception {
         AddJobMojo mojo = new AddJobMojo();
-        ReflectionHelper.setField(mojo, "settings", settings);
+        PrivateAccessor.setField(mojo, "settings", settings);
         return mojo;
     }
 

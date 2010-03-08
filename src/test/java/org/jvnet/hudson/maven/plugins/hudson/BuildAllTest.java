@@ -6,18 +6,18 @@ import java.net.URL;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import junitx.util.PrivateAccessor;
+
 import org.codehaus.plexus.util.IOUtil;
 import org.ddsteps.mock.httpserver.JettyMockServer;
 import org.ddsteps.mock.httpserver.JettyMockServer.Callback;
-
-import com.mtvi.plateng.testing.ReflectionHelper;
 
 public class BuildAllTest extends AbstractWithServerTestCase {
     private String version;
 
     public void testCreateJobBuildURL() throws Exception {
         BuildAllMojo mojo = new BuildAllMojo();
-        ReflectionHelper.setField(mojo, "hudsonURL", new URL("http://localhost:3434/hudson"));
+        PrivateAccessor.setField(mojo, "hudsonURL", new URL("http://localhost:3434/hudson"));
         URL u = mojo.createJobBuildURL("job1");
         assertEquals("http://localhost:3434/hudson/job/job1/build", u.toString());
         u = mojo.createJobBuildURL("job 1");
@@ -32,7 +32,7 @@ public class BuildAllTest extends AbstractWithServerTestCase {
         BuildAllMojo mojo = (BuildAllMojo) lookupMojo("org.jvnet.hudson.tools",
                 "maven-hudson-plugin", version, "build-all", null);
         assertNotNull(mojo);
-        ReflectionHelper.setField(mojo, "hudsonURL", new URL("http://localhost:3434/hudson"));
+        PrivateAccessor.setField(mojo, "hudsonURL", new URL("http://localhost:3434/hudson"));
         mojo.execute();
         mockserver.verify();
     }
@@ -44,7 +44,7 @@ public class BuildAllTest extends AbstractWithServerTestCase {
         BuildAllMojo mojo = (BuildAllMojo) lookupMojo("org.jvnet.hudson.tools",
                 "maven-hudson-plugin", version, "build-all", null);
         assertNotNull(mojo);
-        ReflectionHelper.setField(mojo, "hudsonURL", new URL("http://localhost:3434/hudson"));
+        PrivateAccessor.setField(mojo, "hudsonURL", new URL("http://localhost:3434/hudson"));
         mojo.execute();
         mockserver.verify();
     }
