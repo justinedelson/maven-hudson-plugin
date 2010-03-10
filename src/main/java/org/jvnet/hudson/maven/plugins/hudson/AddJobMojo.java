@@ -20,7 +20,7 @@ import org.apache.velocity.app.Velocity;
 
 /**
  * Goal which creates a Hudson job.
- * 
+ *
  * @goal add-job
  * @aggregator
  */
@@ -43,7 +43,7 @@ public class AddJobMojo extends AbstractHudsonMojo {
 
     /**
      * Additional goals to be run after any reporting goals are executed.
-     * 
+     *
      * @parameter expression="${additionalGoals}"
      */
     private String additionalGoals;
@@ -52,21 +52,21 @@ public class AddJobMojo extends AbstractHudsonMojo {
      * Comma-delimited list of environment variables to have set using the Port
      * Allocator plugin. See
      * http://hudson.gotdns.com/wiki/display/HUDSON/Port+Allocator+Plugin
-     * 
+     *
      * @parameter expression="${allocatePorts}"
      */
     private String allocatePorts;
 
     /**
      * Project description.
-     * 
+     *
      * @parameter expression="${project.description}"
      */
     private String description;
 
     /**
      * Should the produced project XML include Cobertura Publisher support.
-     * 
+     *
      * @parameter expression="${includeCobertura}" default-value="true"
      * @required
      */
@@ -74,7 +74,7 @@ public class AddJobMojo extends AbstractHudsonMojo {
 
     /**
      * Should the produced project XML include email support.
-     * 
+     *
      * @parameter expression="${includeEmail}" default-value="true"
      * @required
      */
@@ -82,7 +82,7 @@ public class AddJobMojo extends AbstractHudsonMojo {
 
     /**
      * Should the produced project XML include Javadoc Publisher support.
-     * 
+     *
      * @parameter expression="${includeJavadoc}" default-value="true"
      * @required
      */
@@ -90,7 +90,7 @@ public class AddJobMojo extends AbstractHudsonMojo {
 
     /**
      * Should the produced project XML include JUnit Publisher support.
-     * 
+     *
      * @parameter expression="${includeJunit}" default-value="true"
      * @required
      */
@@ -98,7 +98,7 @@ public class AddJobMojo extends AbstractHudsonMojo {
 
     /**
      * Should the produced project XML include twitter support.
-     * 
+     *
      * @parameter expression="${includeTwitter}" default-value="true"
      * @required
      */
@@ -106,7 +106,7 @@ public class AddJobMojo extends AbstractHudsonMojo {
 
     /**
      * Should the produced project XML include Violations Publisher support.
-     * 
+     *
      * @parameter expression="${includeViolations}" default-value="true"
      * @required
      */
@@ -114,20 +114,20 @@ public class AddJobMojo extends AbstractHudsonMojo {
 
     /**
      * Name of the job to be created.
-     * 
+     *
      * @parameter expression="${jobName}"
      */
     private String jobName;
     /**
      * Should a clean be performed before the build.
-     * 
+     *
      * @parameter expression="${peformClean}" default-value="true"
      */
     private boolean performClean;
 
     /**
      * Primary "build" goal to be executed. Usually either intstall or deploy.
-     * 
+     *
      * @parameter default-value="install"
      * @required
      */
@@ -136,7 +136,7 @@ public class AddJobMojo extends AbstractHudsonMojo {
     /**
      * Should the -fae command-line option be passed to Maven, specifying that
      * the build should only report a failure at the end.
-     * 
+     *
      * @parameter expression="${failAtEnd}" default-value="true"
      */
     private boolean shouldFailAtEnd = true;
@@ -144,7 +144,7 @@ public class AddJobMojo extends AbstractHudsonMojo {
     /**
      * Should the -B command-line option be passed to Maven, specifying that the
      * build is running in batch (i.e. non-interactive) mode.
-     * 
+     *
      * @parameter expression="${useBatchMode}" default-value="true"
      */
     private boolean shouldUseBatchMode = true;
@@ -152,18 +152,18 @@ public class AddJobMojo extends AbstractHudsonMojo {
     /**
      * If true, will start a VNC session before each job execution. See
      * http://hudson.gotdns.com/wiki/display/HUDSON/Xvnc+Plugin.
-     * 
+     *
      * @parameter expression="${startVNC}"
      */
     private boolean startVNC;
 
     /**
-     * Subversion URL.
-     * 
+     * SCM URL.
+     *
      * @parameter expression="${project.scm.developerConnection}"
      * @required
      */
-    private String subversionURL;
+    private String scmUrl;
 
     static {
         PREFIXES.put("javadoc", Arrays.asList("-Daggregate=true"));
@@ -176,7 +176,7 @@ public class AddJobMojo extends AbstractHudsonMojo {
 
     /**
      * Add the job to Hudson, if necessary.
-     * 
+     *
      * @throws MojoExecutionException if something goes wrong
      */
     public void execute() throws MojoExecutionException {
@@ -199,7 +199,7 @@ public class AddJobMojo extends AbstractHudsonMojo {
 
     /**
      * Create a paylod XML for submission to Hudson.
-     * 
+     *
      * @return the XML to post to Hudson
      * @throws MojoExecutionException if something goes wrong
      */
@@ -207,8 +207,15 @@ public class AddJobMojo extends AbstractHudsonMojo {
         try {
             Velocity.init();
             VelocityContext ctx = new VelocityContext();
+            ctx.put("project", project);
             ctx.put("goals", createFullGoals());
-            ctx.put("subversionURL", subversionURL.replace("scm:svn:", ""));
+            if (scmUrl.startsWith("scm:svn:")) {
+                ctx.put("scmType", "subversion");
+                ctx.put("subversionURL", scmUrl.replace("scm:svn:", ""));
+            } else if (scmUrl.startsWith("scm:git:")) {
+                ctx.put("scmType", "git");
+                ctx.put("gitURL", scmUrl.replace("scm:git:", ""));
+            }
             addIncludes(ctx);
             if (allocatePorts != null) {
                 ctx.put("ports", allocatePorts.split(","));
@@ -230,7 +237,7 @@ public class AddJobMojo extends AbstractHudsonMojo {
 
     /**
      * Create the URL for posting to Hudson.
-     * 
+     *
      * @return the URL to post to on Hudson
      * @throws MojoExecutionException
      */
@@ -244,7 +251,7 @@ public class AddJobMojo extends AbstractHudsonMojo {
 
     /**
      * Determine the job name. Will use jobName if available.
-     * 
+     *
      * @return the job name
      */
     protected String getJobName() {
@@ -257,9 +264,9 @@ public class AddJobMojo extends AbstractHudsonMojo {
 
     /**
      * Method to check if a job already exists.
-     * 
+     *
      * @param hudsonURL The Base Hudson URL
-     * 
+     *
      * @return true if the job already exists in Hudson
      * @throws MojoExecutionException
      */
@@ -277,7 +284,7 @@ public class AddJobMojo extends AbstractHudsonMojo {
 
     /**
      * Post the XML payload to Hudson.
-     * 
+     *
      * @param postURL The URL to post to
      * @param payload The XML payload
      * @throws MojoExecutionException
@@ -293,7 +300,7 @@ public class AddJobMojo extends AbstractHudsonMojo {
     /**
      * Iterate through the fields for this class and see if they start with
      * include. If they do, add each one to the context.
-     * 
+     *
      * @param ctx the VelocityContext to add includes to.
      * @throws IllegalAccessException if something goes wrong in reflection
      */
@@ -311,7 +318,7 @@ public class AddJobMojo extends AbstractHudsonMojo {
      * Create a String containing all the goals for a build. This includes
      * whatever goals are specified in the goals property and any goals required
      * by any enabled plugins.
-     * 
+     *
      * @return a String containing all the goals necessary
      * @throws MojoExecutionException if something goes wrong in reflection
      */
@@ -360,7 +367,7 @@ public class AddJobMojo extends AbstractHudsonMojo {
     /**
      * Reflect for a field named "include"+plugin (with the first character
      * upper cased) and return the value.
-     * 
+     *
      * @param plugin the plugin name
      * @return if the plugin is enabled
      * @throws NoSuchFieldException if the field does not exist
