@@ -9,7 +9,7 @@
 				<configuration>
 					<project implementation="org.jvnet.hudson.maven.plugins.hudson.stubs.LocalCIProjectStub"/>
 					<jobName>test-project</jobName>
-					<subversionURL>scm:svn:https://subversion.1515.mtvi.com/java/foo/bar/</subversionURL>
+					<scmUrl>scm:svn:https://subversion.1515.mtvi.com/java/foo/bar/</scmUrl>
 					<primaryGoal>install</primaryGoal>
 					<description>some description</description>
 					<settings implementation="org.jvnet.hudson.maven.plugins.hudson.stubs.AuthSettingsStub"/>

@@ -17,18 +17,33 @@ public class CreatePayloadMojoTest extends TestCase {
                         "-fae -B -Daggregate=true clean install cobertura:cobertura pmd:pmd pmd:cpd findbugs:findbugs checkstyle:checkstyle javadoc:javadoc",
                         "/project/builders/hudson.tasks.Maven/targets", payload);
 
-        XMLAssert.assertXpathExists("/project/publishers/hudson.tasks.junit.JUnitResultArchiver",
-                payload);
+        XMLAssert.assertXpathExists("/project/publishers/hudson.tasks.junit.JUnitResultArchiver", payload);
         XMLAssert.assertXpathExists("/project/publishers/hudson.tasks.JavadocArchiver", payload);
-        XMLAssert.assertXpathExists(
-                "/project/publishers/hudson.plugins.violations.ViolationsPublisher", payload);
-        XMLAssert.assertXpathExists(
-                "/project/publishers/hudson.plugins.cobertura.CoberturaPublisher", payload);
-        XMLAssert.assertXpathNotExists(
-                "/project/buildWrappers/org.jvnet.hudson.plugins.port__allocator.PortAllocator",
+        XMLAssert.assertXpathExists("/project/publishers/hudson.plugins.violations.ViolationsPublisher", payload);
+        XMLAssert.assertXpathExists("/project/publishers/hudson.plugins.cobertura.CoberturaPublisher", payload);
+        XMLAssert.assertXpathNotExists("/project/buildWrappers/org.jvnet.hudson.plugins.port__allocator.PortAllocator",
                 payload);
 
         XMLAssert.assertXpathExists("/project/publishers/hudson.tasks.Mailer", payload);
+
+        XMLAssert.assertXpathEvaluatesTo("hudson.scm.SubversionSCM",
+                "/project/scm/@class", payload);
+
+        XMLAssert.assertXpathEvaluatesTo("https://subversion.1515.mtvi.com/java/foo/bar/",
+                "/project/scm/locations/hudson.scm.SubversionSCM_-ModuleLocation/remote", payload);
+    }
+
+    public void testCreateWithGit() throws Exception {
+        PrivateAccessor.setField(mojo, "scmUrl", "scm:git:git@github.com/justinedelson/maven-misc-plugin.git");
+
+
+        String payload = mojo.createPayload();
+
+        XMLAssert.assertXpathEvaluatesTo("hudson.plugins.git.GitSCM",
+                "/project/scm/@class", payload);
+
+        XMLAssert.assertXpathEvaluatesTo("git@github.com/justinedelson/maven-misc-plugin.git",
+                "/project/scm/remoteRepositories/org.spearce.jgit.transport.RemoteConfig/string[9]", payload);
     }
 
     public void testCreateNoCoberturaPayload() throws Exception {
@@ -41,13 +56,10 @@ public class CreatePayloadMojoTest extends TestCase {
                         "-fae -B -Daggregate=true clean install pmd:pmd pmd:cpd findbugs:findbugs checkstyle:checkstyle javadoc:javadoc",
                         "/project/builders/hudson.tasks.Maven/targets", payload);
 
-        XMLAssert.assertXpathExists("/project/publishers/hudson.tasks.junit.JUnitResultArchiver",
-                payload);
+        XMLAssert.assertXpathExists("/project/publishers/hudson.tasks.junit.JUnitResultArchiver", payload);
         XMLAssert.assertXpathExists("/project/publishers/hudson.tasks.JavadocArchiver", payload);
-        XMLAssert.assertXpathExists(
-                "/project/publishers/hudson.plugins.violations.ViolationsPublisher", payload);
-        XMLAssert.assertXpathNotExists(
-                "/project/publishers/hudson.plugins.cobertura.CoberturaPublisher", payload);
+        XMLAssert.assertXpathExists("/project/publishers/hudson.plugins.violations.ViolationsPublisher", payload);
+        XMLAssert.assertXpathNotExists("/project/publishers/hudson.plugins.cobertura.CoberturaPublisher", payload);
 
         XMLAssert.assertXpathExists("/project/publishers/hudson.tasks.Mailer", payload);
     }
@@ -61,17 +73,13 @@ public class CreatePayloadMojoTest extends TestCase {
                 .assertXpathEvaluatesTo(
                         "-fae -B -Daggregate=true clean install cobertura:cobertura pmd:pmd pmd:cpd findbugs:findbugs checkstyle:checkstyle javadoc:javadoc",
                         "/project/builders/hudson.tasks.Maven/targets", payload);
-        XMLAssert.assertXpathExists("/project/publishers/hudson.tasks.junit.JUnitResultArchiver",
-                payload);
+        XMLAssert.assertXpathExists("/project/publishers/hudson.tasks.junit.JUnitResultArchiver", payload);
         XMLAssert.assertXpathExists("/project/publishers/hudson.tasks.JavadocArchiver", payload);
-        XMLAssert.assertXpathExists(
-                "/project/publishers/hudson.plugins.violations.ViolationsPublisher", payload);
-        XMLAssert.assertXpathExists(
-                "/project/publishers/hudson.plugins.cobertura.CoberturaPublisher", payload);
+        XMLAssert.assertXpathExists("/project/publishers/hudson.plugins.violations.ViolationsPublisher", payload);
+        XMLAssert.assertXpathExists("/project/publishers/hudson.plugins.cobertura.CoberturaPublisher", payload);
 
         XMLAssert.assertXpathNotExists("/project/publishers/hudson.tasks.Mailer", payload);
-        XMLAssert.assertXpathExists("/project/publishers/hudson.plugins.twitter.TwitterPublisher",
-                payload);
+        XMLAssert.assertXpathExists("/project/publishers/hudson.plugins.twitter.TwitterPublisher", payload);
     }
 
     public void testCreateNoJavadocPayload() throws Exception {
@@ -79,19 +87,14 @@ public class CreatePayloadMojoTest extends TestCase {
 
         String payload = mojo.createPayload();
 
-        XMLAssert
-                .assertXpathEvaluatesTo(
-                        "-fae -B clean install cobertura:cobertura pmd:pmd pmd:cpd findbugs:findbugs checkstyle:checkstyle",
-                        "/project/builders/hudson.tasks.Maven/targets", payload);
+        XMLAssert.assertXpathEvaluatesTo(
+                "-fae -B clean install cobertura:cobertura pmd:pmd pmd:cpd findbugs:findbugs checkstyle:checkstyle",
+                "/project/builders/hudson.tasks.Maven/targets", payload);
 
-        XMLAssert.assertXpathExists("/project/publishers/hudson.tasks.junit.JUnitResultArchiver",
-                payload);
-        XMLAssert.assertXpathExists(
-                "/project/publishers/hudson.plugins.violations.ViolationsPublisher", payload);
-        XMLAssert.assertXpathExists(
-                "/project/publishers/hudson.plugins.cobertura.CoberturaPublisher", payload);
-        XMLAssert.assertXpathNotExists(
-                "/project/buildWrappers/org.jvnet.hudson.plugins.port__allocator.PortAllocator",
+        XMLAssert.assertXpathExists("/project/publishers/hudson.tasks.junit.JUnitResultArchiver", payload);
+        XMLAssert.assertXpathExists("/project/publishers/hudson.plugins.violations.ViolationsPublisher", payload);
+        XMLAssert.assertXpathExists("/project/publishers/hudson.plugins.cobertura.CoberturaPublisher", payload);
+        XMLAssert.assertXpathNotExists("/project/buildWrappers/org.jvnet.hudson.plugins.port__allocator.PortAllocator",
                 payload);
 
         XMLAssert.assertXpathExists("/project/publishers/hudson.tasks.Mailer", payload);
@@ -101,13 +104,10 @@ public class CreatePayloadMojoTest extends TestCase {
         PrivateAccessor.setField(mojo, "includeJunit", false);
 
         String payload = mojo.createPayload();
-        XMLAssert.assertXpathNotExists(
-                "/project/publishers/hudson.tasks.junit.JUnitResultArchiver", payload);
+        XMLAssert.assertXpathNotExists("/project/publishers/hudson.tasks.junit.JUnitResultArchiver", payload);
         XMLAssert.assertXpathExists("/project/publishers/hudson.tasks.JavadocArchiver", payload);
-        XMLAssert.assertXpathExists(
-                "/project/publishers/hudson.plugins.violations.ViolationsPublisher", payload);
-        XMLAssert.assertXpathExists(
-                "/project/publishers/hudson.plugins.cobertura.CoberturaPublisher", payload);
+        XMLAssert.assertXpathExists("/project/publishers/hudson.plugins.violations.ViolationsPublisher", payload);
+        XMLAssert.assertXpathExists("/project/publishers/hudson.plugins.cobertura.CoberturaPublisher", payload);
 
         XMLAssert.assertXpathExists("/project/publishers/hudson.tasks.Mailer", payload);
     }
@@ -121,17 +121,13 @@ public class CreatePayloadMojoTest extends TestCase {
                 .assertXpathEvaluatesTo(
                         "-fae -B -Daggregate=true clean install cobertura:cobertura pmd:pmd pmd:cpd findbugs:findbugs checkstyle:checkstyle javadoc:javadoc",
                         "/project/builders/hudson.tasks.Maven/targets", payload);
-        XMLAssert.assertXpathExists("/project/publishers/hudson.tasks.junit.JUnitResultArchiver",
-                payload);
+        XMLAssert.assertXpathExists("/project/publishers/hudson.tasks.junit.JUnitResultArchiver", payload);
         XMLAssert.assertXpathExists("/project/publishers/hudson.tasks.JavadocArchiver", payload);
-        XMLAssert.assertXpathExists(
-                "/project/publishers/hudson.plugins.violations.ViolationsPublisher", payload);
-        XMLAssert.assertXpathExists(
-                "/project/publishers/hudson.plugins.cobertura.CoberturaPublisher", payload);
+        XMLAssert.assertXpathExists("/project/publishers/hudson.plugins.violations.ViolationsPublisher", payload);
+        XMLAssert.assertXpathExists("/project/publishers/hudson.plugins.cobertura.CoberturaPublisher", payload);
 
         XMLAssert.assertXpathExists("/project/publishers/hudson.tasks.Mailer", payload);
-        XMLAssert.assertXpathNotExists(
-                "/project/publishers/hudson.plugins.twitter.TwitterPublisher", payload);
+        XMLAssert.assertXpathNotExists("/project/publishers/hudson.plugins.twitter.TwitterPublisher", payload);
     }
 
     public void testCreateNoViolationsPayload() throws Exception {
@@ -139,16 +135,12 @@ public class CreatePayloadMojoTest extends TestCase {
 
         String payload = mojo.createPayload();
 
-        XMLAssert.assertXpathEvaluatesTo(
-                "-fae -B -Daggregate=true clean install cobertura:cobertura javadoc:javadoc",
+        XMLAssert.assertXpathEvaluatesTo("-fae -B -Daggregate=true clean install cobertura:cobertura javadoc:javadoc",
                 "/project/builders/hudson.tasks.Maven/targets", payload);
         XMLAssert.assertXpathExists("/project/publishers/hudson.tasks.JavadocArchiver", payload);
-        XMLAssert.assertXpathExists("/project/publishers/hudson.tasks.junit.JUnitResultArchiver",
-                payload);
-        XMLAssert.assertXpathNotExists(
-                "/project/publishers/hudson.plugins.violations.ViolationsPublisher", payload);
-        XMLAssert.assertXpathExists(
-                "/project/publishers/hudson.plugins.cobertura.CoberturaPublisher", payload);
+        XMLAssert.assertXpathExists("/project/publishers/hudson.tasks.junit.JUnitResultArchiver", payload);
+        XMLAssert.assertXpathNotExists("/project/publishers/hudson.plugins.violations.ViolationsPublisher", payload);
+        XMLAssert.assertXpathExists("/project/publishers/hudson.plugins.cobertura.CoberturaPublisher", payload);
 
         XMLAssert.assertXpathExists("/project/publishers/hudson.tasks.Mailer", payload);
     }
@@ -208,13 +200,12 @@ public class CreatePayloadMojoTest extends TestCase {
     }
 
     @Override
-    protected void setUp() throws Exception {
+    public void setUp() throws Exception {
         super.setUp();
         mojo = new AddJobMojo();
         PrivateAccessor.setField(mojo, "performClean", true);
         PrivateAccessor.setField(mojo, "primaryGoal", "install");
-        PrivateAccessor.setField(mojo, "subversionURL",
-                "scm:svn:https://subversion.1515.mtvi.com/java/foo/bar/");
+        PrivateAccessor.setField(mojo, "scmUrl", "scm:svn:https://subversion.1515.mtvi.com/java/foo/bar/");
         PrivateAccessor.setField(mojo, "description", "description");
     }
 

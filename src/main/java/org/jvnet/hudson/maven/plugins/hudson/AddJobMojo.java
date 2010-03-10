@@ -165,13 +165,19 @@ public class AddJobMojo extends AbstractHudsonMojo {
      */
     private String scmUrl;
 
+    /**
+     * True to use the Maven 2 Project Type
+     *
+     * @parameter expression="${useMavenProjectType}" default-value="false"
+     */
+    private boolean useMavenProjectType;
+
     static {
         PREFIXES.put("javadoc", Arrays.asList("-Daggregate=true"));
 
         GOALS.put("cobertura", Arrays.asList("cobertura:cobertura"));
         GOALS.put("javadoc", Arrays.asList("javadoc:javadoc"));
-        GOALS.put("violations", Arrays.asList("pmd:pmd", "pmd:cpd", "findbugs:findbugs",
-                "checkstyle:checkstyle"));
+        GOALS.put("violations", Arrays.asList("pmd:pmd", "pmd:cpd", "findbugs:findbugs", "checkstyle:checkstyle"));
     }
 
     /**
@@ -194,6 +200,8 @@ public class AddJobMojo extends AbstractHudsonMojo {
             String payload = createPayload();
 
             postPayload(postURL, payload);
+        } else {
+            getLog().warn("Job exists; not overwriting.");
         }
     }
 
@@ -209,13 +217,10 @@ public class AddJobMojo extends AbstractHudsonMojo {
             VelocityContext ctx = new VelocityContext();
             ctx.put("project", project);
             ctx.put("goals", createFullGoals());
-            if (scmUrl.startsWith("scm:svn:")) {
-                ctx.put("scmType", "subversion");
-                ctx.put("subversionURL", scmUrl.replace("scm:svn:", ""));
-            } else if (scmUrl.startsWith("scm:git:")) {
-                ctx.put("scmType", "git");
-                ctx.put("gitURL", scmUrl.replace("scm:git:", ""));
-            }
+
+            String scmElement = createSCMElement();
+            ctx.put("scmElement", scmElement);
+
             addIncludes(ctx);
             if (allocatePorts != null) {
                 ctx.put("ports", allocatePorts.split(","));
@@ -227,12 +232,31 @@ public class AddJobMojo extends AbstractHudsonMojo {
                 ctx.put("description", "");
             }
             StringWriter sw = new StringWriter();
-            Velocity.evaluate(ctx, sw, "project-template.vm", getClass().getResourceAsStream(
-                    "/project-template.vm"));
+            String template = "project-template.vm";
+            if (useMavenProjectType) {
+                template = "maven-template.vm";
+            }
+
+            Velocity.evaluate(ctx, sw, template, getClass().getResourceAsStream("/" + template));
             return sw.toString();
         } catch (Exception e) {
             throw new MojoExecutionException("Unable to evaluate template", e);
         }
+    }
+
+    private String createSCMElement() throws IOException {
+        VelocityContext ctx1 = new VelocityContext();
+        if (scmUrl.startsWith("scm:svn:")) {
+            ctx1.put("scmType", "subversion");
+            ctx1.put("scmURL", scmUrl.replace("scm:svn:", ""));
+        } else if (scmUrl.startsWith("scm:git:")) {
+            ctx1.put("scmType", "git");
+            String gitUrl = scmUrl.replace("scm:git:", "");
+            ctx1.put("scmURL", gitUrl);
+        }
+        StringWriter sw1 = new StringWriter();
+        Velocity.evaluate(ctx1, sw1, "project-template.vm", getClass().getResourceAsStream("/scm-template.vm"));
+        return sw1.toString();
     }
 
     /**
@@ -271,8 +295,7 @@ public class AddJobMojo extends AbstractHudsonMojo {
      * @throws MojoExecutionException
      */
     protected boolean jobExists() throws MojoExecutionException {
-        String jobURL = String.format("%s/api/xml?xpath=/hudson/job[name='%s']", hudsonURL,
-                getJobName());
+        String jobURL = String.format("%s/api/xml?xpath=/hudson/job[name='%s']", hudsonURL, getJobName());
         GetMethod gm = new GetMethod(jobURL);
         try {
             int status = httpClient.executeMethod(gm);
@@ -325,18 +348,20 @@ public class AddJobMojo extends AbstractHudsonMojo {
     private String createFullGoals() throws MojoExecutionException {
         try {
             StringBuilder builder = new StringBuilder();
-            if (shouldFailAtEnd) {
-                builder.append("-fae ");
-            }
+            if (!useMavenProjectType) {
+                if (shouldFailAtEnd) {
+                    builder.append("-fae ");
+                }
 
-            if (shouldUseBatchMode) {
-                builder.append("-B ");
-            }
+                if (shouldUseBatchMode) {
+                    builder.append("-B ");
+                }
 
-            for (String plugin : PLUGINS) {
-                if (isPluginEnabled(plugin) && PREFIXES.containsKey(plugin)) {
-                    builder.append(StringUtils.join(PREFIXES.get(plugin).toArray(), " "));
-                    builder.append(" ");
+                for (String plugin : PLUGINS) {
+                    if (isPluginEnabled(plugin) && PREFIXES.containsKey(plugin)) {
+                        builder.append(StringUtils.join(PREFIXES.get(plugin).toArray(), " "));
+                        builder.append(" ");
+                    }
                 }
             }
 
@@ -347,10 +372,12 @@ public class AddJobMojo extends AbstractHudsonMojo {
             builder.append(primaryGoal);
             builder.append(" ");
 
-            for (String plugin : PLUGINS) {
-                if (isPluginEnabled(plugin) && GOALS.containsKey(plugin)) {
-                    builder.append(StringUtils.join(GOALS.get(plugin).toArray(), " "));
-                    builder.append(" ");
+            if (!useMavenProjectType) {
+                for (String plugin : PLUGINS) {
+                    if (isPluginEnabled(plugin) && GOALS.containsKey(plugin)) {
+                        builder.append(StringUtils.join(GOALS.get(plugin).toArray(), " "));
+                        builder.append(" ");
+                    }
                 }
             }
 
@@ -373,8 +400,7 @@ public class AddJobMojo extends AbstractHudsonMojo {
      * @throws NoSuchFieldException if the field does not exist
      * @throws IllegalAccessException if we're unable to reflect
      */
-    private boolean isPluginEnabled(String plugin) throws NoSuchFieldException,
-            IllegalAccessException {
+    private boolean isPluginEnabled(String plugin) throws NoSuchFieldException, IllegalAccessException {
         String fieldName = "include" + plugin.substring(0, 1).toUpperCase() + plugin.substring(1);
         Field field = AddJobMojo.class.getDeclaredField(fieldName);
         return field.getBoolean(this);

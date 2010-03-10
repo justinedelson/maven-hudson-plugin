@@ -180,15 +180,7 @@
     <hudson.plugins.xvnc.Xvnc/>
 #end
   </buildWrappers>
-  <scm class="hudson.scm.SubversionSCM">
-    <locations>
-      <hudson.scm.SubversionSCM_-ModuleLocation>
-        <remote>$subversionURL</remote>
-        <local>trunk</local>
-      </hudson.scm.SubversionSCM_-ModuleLocation>
-    </locations>
-    <useUpdate>true</useUpdate>
-  </scm>
+$scmElement
   <canRoam>true</canRoam>
   <disabled>false</disabled>
   <triggers class="vector">
